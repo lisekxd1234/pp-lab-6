@@ -1,22 +1,22 @@
 import company.models.Manager;
 import company.models.Worker;
+import company.abstracts.Employee;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // główna klasa aplikacji
 public class Main {
     public static void main(String[] args) {
-        Worker worker1 = new Worker("Jan Kowalski", 3000, 1);
-        Worker worker2 = new Worker("Anna Nowak", 3500, 2);
-        Worker worker3 = new Worker("Piotr Zalewski", 3200, 3);
-        Manager manager = new Manager("Robert Lewandowski", 5000, 4);
+        List<Employee> employees = new ArrayList<>();  // lista przechowująca obiekty employee
+        employees.add(new Worker("Jan Kowalski", 3000, 1, "2024-01-01", "Developer"));
+        employees.add(new Worker("Anna Nowak", 3500, 2, "2023-12-01", "Designer"));
+        employees.add(new Worker("Piotr Zalewski", 3200, 3, "2024-02-01", "Tester"));
+        employees.add(new Manager("Robert Lewandowski", 5000, 4, "2022-05-01", "Team Leader"));
 
-        // wyświetlenie wynagrodzenia i wywołanie metody work dla każdego z pracowników
-        System.out.println(worker1.getName() + " zarabia: " + worker1.getSalary());
-        worker1.work();
-        System.out.println(worker2.getName() + " zarabia: " + worker2.getSalary());
-        worker2.work();
-        System.out.println(worker3.getName() + " zarabia: " + worker3.getSalary());
-        worker3.work();
-        System.out.println(manager.getName() + " zarabia: " + manager.getSalary());
-        manager.work();
+        for (Employee employee : employees) {
+            System.out.println(employee.getName() + " (ID: " + employee.hashCode() + "), Position: " + employee.getPosition() + ", Hire date: " + employee.getHireDate() + ", Salary: " + employee.getSalary());
+            employee.work();
+        }
     }
 }
