@@ -9,21 +9,36 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         List<Employee> employees = new ArrayList<>();  // lista przechowująca obiekty pracowników
-        employees.add(new Worker("Jan Kowalski", 3000, 1, "2024-01-01", "Programista"));
-        employees.add(new Worker("Jan Kowalski", 3000, 1, "2024-01-01", "Programista")); // drugi pracownik z tym samym ID
+        employees.add(new Worker("Jan Kowalski", 3000, 1, "2024-01-01", "Developer"));
+        employees.add(new Worker("Anna Nowak", 3500, 2, "2023-12-01", "Designer"));
         employees.add(new Worker("Piotr Zalewski", 3200, 3, "2024-02-01", "Tester"));
-        Manager manager = new Manager("Robert Lewandowski", 5000, 4, "2022-05-01", "Kierownik Zespołu");
-        employees.add(manager);
+        employees.add(new Manager("Robert Lewandowski", 5000, 4, "2022-05-01", "Team Leader"));
 
-        // wyświetlanie kodu hash i porównywanie pracowników
-        for (Employee employee : employees) {
-            System.out.println(employee.getName() + " ma kod: " + employee.hashCode());
-        }
+        // obliczanie całkowitej sumy pensji wszystkich pracowników
+        double totalSalary = employees.stream().mapToDouble(Employee::getSalary).sum();
+        System.out.println("całkowita suma pensji wszystkich pracowników: " + totalSalary);
 
-        // Sprawdzanie równości pracowników
-        Employee firstWorker = employees.get(0);
-        for (int i = 1; i < employees.size(); i++) {
-            System.out.println("Porównanie " + firstWorker.getName() + " z " + employees.get(i).getName() + ": " + firstWorker.equals(employees.get(i)));
+        // obliczanie sumy pensji wszystkich workerów
+        double totalWorkerSalary = employees.stream()
+            .filter(e -> e instanceof Worker)
+            .mapToDouble(Employee::getSalary)
+            .sum();
+        System.out.println("suma pensji wszystkich workerów: " + totalWorkerSalary);
+
+        // obliczanie sumy pensji wszystkich managerów
+        double totalManagerSalary = employees.stream()
+            .filter(e -> e instanceof Manager)
+            .mapToDouble(Employee::getSalary)
+            .sum();
+        System.out.println("suma pensji wszystkich managerów: " + totalManagerSalary);
+
+        // wyświetla w terminalu informacje o tych kowatach, będzie wyszukiwał wszystkie instancje obiektu, które mają swój odpowiednik w kolekcji (posiadają to samo id)
+        for (int i = 0; i < employees.size(); i++) {
+            for (int j = i + 1; j < employees.size(); j++) {
+                if (employees.get(i).hashCode() == employees.get(j).hashCode()) {
+                    System.out.println("pracownicy o tym samym id: " + employees.get(i).getName() + " i " + employees.get(j).getName());
+                }
+            }
         }
     }
 }
